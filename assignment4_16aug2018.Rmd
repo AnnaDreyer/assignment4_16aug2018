@@ -1,0 +1,91 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Assignment 4 :  Logistic regression
+
+Installing packages
+```{r warning=FALSE, include=FALSE}
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("psych")
+library(psych)
+install.packages("magrittr")
+library(magrittr)
+install.packages("knitr")
+library(knitr)
+install.packages("haven")
+library(haven)
+install.packages("readxl")
+library(readxl)
+install.packages("stringi")
+library(stringi)
+```
+
+
+Questions 1 and 2- leaving for now
+
+Question 3
+lineuptpta (binary, coding whether the target/perpetrator was present or absent in the lineup) 
+
+lineupacc   (binary – the outcome variable – recording accuracy of decision in lineup task (1 = correct (hit in target present lineup, correct rejection in target present lineup)) 
+
+videocondition  (binary, recording whether participants saw a long, or short video of the crime in question – about 3s vs 90s). 
+
+confidenceresp  (continuous, witness’ self-reported confidence in the correctness of his/her decision, 0 to 100 point scale) 
+
+lineuprt  (continuous, reaction time of witness in milliseconds in lineup task) 
+
+decisionstrategyresp.1  (self-report item recording whether the witness made the decision after much deliberation, or ‘automatically’) 
+
+decisionstrategyresp.2 (self-report item recording whether the witness rejected the lineup because the faces were unlike that of the perpetrator)
+
+
+load data
+```{r}
+test.data <- load("eye_FR_testdata-1.txt")
+train.data <- load("eye_FR_traindata-1.txt")
+```
+
+recoding variables
+```{r}
+traindata$lineupacc <- as.factor(traindata$lineupacc)
+traindata$automatic<- as.factor(traindata$automatic) #likert strategies
+traindata$facecomparison<- as.factor(traindata$facecomparison)
+```
+
+tpta
+exposure
+stategy
+
+think, if memory is good and probe there- very automatic (4/5), if memory is good but not there- what happens then- searching...
+
+main outcome is accuracy (o or 1)
+boxplots -accuracy 
+```{r}
+
+```
+
+describe by summary statistics
+```{r}
+
+```
+
+
+building ordinal logistics model using train data
+```{r}
+model1 <-glm(lineupacc ~ lineuptpta + lineupacc + exposure + confidence + lineuprt + automatic + facecomparison, family = "binomial", data = traindata)
+
+```
+
+
+
+```{r}
+predictdf <- data.frame(tobacco = 20)
+predict(chdtobacco,newdata = 	predictdf) # to get the answer in logits
+predict(chdtobacco,newdata = predictdf,type = “response”) # to get the answer in probabilities
+x <- predict(chdtobacco,newdata=predictdf, 	type = “response”)
+odds <- x/(1-x)  
+```
+
